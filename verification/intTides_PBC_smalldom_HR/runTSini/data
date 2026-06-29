@@ -1,0 +1,68 @@
+# ====================
+# | Model parameters |
+# ====================
+#
+# Continuous equation parameters
+ &PARM01
+ Tref=60*10.05, 
+ Sref=60*34.14,
+ rhoNil=1026.0, 
+ viscAz=1.E-3,
+ viscAh=100., 
+ no_slip_sides=.TRUE.,
+ no_slip_bottom=.TRUE.,
+ diffKzT=1.E-3, 
+ diffKhS=100.,   
+ diffKzS=1.E-3,
+ diffKhT=100.,   
+ eosType='LINEAR',
+ tAlpha=2.E-4,
+ sBeta=7.4E-4,
+ gravity=9.81,
+ implicitFreeSurface=.TRUE.,
+ nonHydrostatic=.FALSE.,
+ readBinaryPrec=64,
+ useSingleCpuIO=.TRUE.,
+ hFacMin=0.3,
+ &
+
+# Elliptic solver parameters
+ &PARM02
+ cg2dMaxIters=1000,
+ cg2dTargetResidual=1.E-7,
+ &
+
+# Time stepping parameters
+ &PARM03
+ nIter0=0,
+ endTime=1296000,
+ deltaT=9.,
+ abEps=0.1,
+ pChkptFreq=0.,
+ chkptFreq=86400.,
+ dumpFreq=18000.,
+ monitorFreq=3600.,
+ monitorSelect=2,
+ periodicExternalForcing = .TRUE.,
+ externForcingPeriod = 21600., 
+ externForcingCycle = 43200.,
+ &
+
+# Gridding parameters
+ &PARM04
+ usingSphericalPolarGrid=.TRUE.,
+ delXFile='../input/smalldom_600x600_BTS_dx.bin',
+ delYFile='../input/smalldom_600x600_BTS_dy.bin',
+ delZ= 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 16, 
+       17, 19, 21, 22, 25, 27, 29, 32, 35, 38, 42, 46, 50, 54, 59, 65, 71, 77, 84, 92, 101, 110, 120, 131, 143, 
+       153, 168,
+ xgOrigin=242.5,
+ ygOrigin=31.25,
+ &
+
+# Input datasets
+ &PARM05
+ bathyFile='../input/smalldom_600x600_BTS_bat.bin',
+ hydrogThetaFile = '../input/IniTemp60x600x600.bin',
+ hydrogSaltFile = '../input/IniSalt60x600x600.bin',
+ &

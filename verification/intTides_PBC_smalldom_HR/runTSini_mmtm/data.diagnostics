@@ -1,0 +1,48 @@
+# Diagnostics for an Eulerian momentum budget in vector-invariant form.
+#
+# Positive frequency means a time mean.  5589 s is exactly M2/8 for the
+# prescribed 44712 s tide and exactly 621 model time steps (deltaT=9 s).
+# All output is double precision to minimize cancellation error in the
+# residual of the momentum budget.  File names are relative and portable.
+#
+# Stream 1: resolved state and pressure fields.
+# Stream 2: terms needed for a direct MITgcm discrete budget closure.
+# Stream 3: vector-invariant decomposition.  The Bernoulli contribution is
+#           -grad(momKE); compute it on the native C grid with DXC/DYC.
+#
+# Important units: TOTUTEND and TOTVTEND are m/s/day; all Um_*/Vm_* and
+# AB_gU/AB_gV tendencies are m/s^2.
+
+ &DIAGNOSTICS_LIST
+  dumpAtLast = .FALSE.,
+
+  fields(1:9,1) =
+       'UVEL    ','VVEL    ','WVEL    ','ETAN    ','THETA  ',
+       'SALT    ','RHOAnoma','PHIHYD  ','PHIBOT  ',
+  fileName(1) = 'diag_state',
+  frequency(1) = 5589.,
+  timePhase(1) = 0.,
+  fileFlags(1) = 'D       ',
+
+  fields(1:12,2) =
+       'TOTUTEND','TOTVTEND','Um_Advec','Vm_Advec',
+       'Um_dPhiX','Vm_dPhiY','Um_Ext  ','Vm_Ext  ',
+       'Um_Diss ','Vm_Diss ','AB_gU   ','AB_gV   ',
+  fileName(2) = 'diag_mom_budget',
+  frequency(2) = 5589.,
+  timePhase(2) = 0.,
+  fileFlags(2) = 'D       ',
+
+  fields(1:14,3) =
+       'Um_Cori ','Vm_Cori ','Um_AdvZ3','Vm_AdvZ3',
+       'Um_AdvRe','Vm_AdvRe','momKE   ','momVort3',
+       'Um_hDis2','Vm_hDis2','USidDrag','VSidDrag',
+       'UBotDrag','VBotDrag',
+  fileName(3) = 'diag_mom_vecinv',
+  frequency(3) = 5589.,
+  timePhase(3) = 0.,
+  fileFlags(3) = 'D       ',
+ &
+
+ &DIAG_STATIS_PARMS
+ &

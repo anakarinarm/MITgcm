@@ -1,0 +1,27 @@
+# Open-boundaries
+ &OBCS_PARM01
+ OB_Iwest = 600*1,
+ OB_Jsouth = 600*1,
+ OB_Jnorth = 600*600,
+ useOBCSbalance=.TRUE.,
+ useOBCSprescribe=.TRUE.,
+ OBCS_balanceFacW=-1.,
+ OBCS_balanceFacS=1.,
+ OBCS_balanceFacN=1.,
+ OBCS_monitorFreq=1200.,
+ useOBCStides = .TRUE.,
+ OBCS_tidalperiod = 44712.,86148.,
+ OBS_vTidAmFile = '../input/OBSvam_M2_K1_smalldom_HR_shelfTopo.bin',
+ OBN_vTidAmFile = '../input/OBNvam_M2_K1_smalldom_HR_shelfTopo.bin',
+ OBW_uTidAmFile = '../input/OBWuam_M2_K1_smalldom_HR_shelfTopo.bin',
+ OBS_vTidPhFile = '../input/OBSvph_M2_K1_smalldom_HR_shelfTopo.bin',
+ OBN_vTidPhFile = '../input/OBNvph_M2_K1_smalldom_HR_shelfTopo.bin',
+ OBW_uTidPhFile = '../input/OBWuph_M2_K1_smalldom_HR_shelfTopo.bin', 
+ OBNtFile = '../input/linTN.bin',
+ OBStFile = '../input/linTS.bin',
+ OBWtFile = '../input/linTW.bin',
+ OBNsFile = '../input/linSN.bin',
+ OBSsFile = '../input/linSS.bin',
+ OBWsFile = '../input/linSW.bin',
+ &
+

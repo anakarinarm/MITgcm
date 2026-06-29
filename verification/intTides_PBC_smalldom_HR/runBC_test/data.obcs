@@ -1,0 +1,36 @@
+# Open-boundaries
+ &OBCS_PARM01
+ OB_Iwest = 600*1,
+ OB_Jsouth = 600*1,
+ OB_Jnorth = 600*600,
+ useOBCSbalance=.FALSE.,
+ useOBCSprescribe=.TRUE.,
+ OBCS_monitorFreq=1200.,
+ OBCSprintDiags=.FALSE.,
+ useStevensWest=.TRUE.,
+ useStevensSouth=.TRUE.,
+ useStevensNorth=.TRUE.,
+ useOBCStides = .TRUE.,
+ OBCS_tidalperiod = 44712.,
+ OBS_vTidAmFile = '../input/OBSvam_M2_zeroNet.bin',
+ OBN_vTidAmFile = '../input/OBNvam_M2_zeroNet.bin',
+ OBW_uTidAmFile = '../input/OBWuam_M2_zeroNet.bin',
+ OBS_vTidPhFile = '../input/OBSvph_M2_zeroNet.bin',
+ OBN_vTidPhFile = '../input/OBNvph_M2_zeroNet.bin',
+ OBW_uTidPhFile = '../input/OBWuph_M2_zeroNet.bin',
+ OBNtFile = '../input/linTN.bin',
+ OBStFile = '../input/linTS.bin',
+ OBWtFile = '../input/linTW.bin',
+ OBNsFile = '../input/linSN.bin',
+ OBSsFile = '../input/linSS.bin',
+ OBWsFile = '../input/linSW.bin',
+ &
+
+# During inflow, relax T/S toward the prescribed background profiles.
+# During outflow, Stevens radiates tracer anomalies out of the domain.
+ &OBCS_PARM04
+ TrelaxStevens=3600.,
+ SrelaxStevens=3600.,
+ useStevensPhaseVel=.TRUE.,
+ useStevensAdvection=.TRUE.,
+ &

@@ -1,0 +1,62 @@
+# HR analytical south-entering M2 boundary test.
+# South receives a tapered normal velocity with A0=0.01 m/s; north receives a
+# uniform compensating return flow; west prescribed velocity is zero. No SSH.
+ &OBCS_PARM01
+ OB_Iwest = 720*1,
+ OB_Jsouth = 660*1,
+ OB_Jnorth = 660*720,
+ useOBCSbalance=.FALSE.,
+ useOBCSprescribe=.TRUE.,
+ useOBCSsponge=.TRUE.,
+ OBCSsponge_W=.TRUE.,
+ OBCSsponge_S=.TRUE.,
+ OBCSsponge_N=.TRUE.,
+ OBCSsponge_E=.FALSE.,
+ OBCSsponge_UatNS=.TRUE.,
+ OBCSsponge_UatEW=.TRUE.,
+ OBCSsponge_VatNS=.TRUE.,
+ OBCSsponge_VatEW=.TRUE.,
+ OBCSsponge_Theta=.FALSE.,
+ OBCSsponge_Salt=.FALSE.,
+ useLinearSponge=.FALSE.,
+ OBCS_monitorFreq=1200.,
+ OBCSprintDiags=.FALSE.,
+ useStevensWest=.TRUE.,
+ useStevensSouth=.TRUE.,
+ useStevensNorth=.TRUE.,
+ useOBCStides = .TRUE.,
+ OBCS_tidalperiod = 44712.,
+ OBS_vTidAmFile = '../input/OBSvam_M2_analyticSouth_A001_Nreturn_HR660x720_telescopic60.bin',
+ OBN_vTidAmFile = '../input/OBNvam_M2_analyticSouth_A001_Nreturn_HR660x720_telescopic60.bin',
+ OBW_uTidAmFile = '../input/OBWuam_M2_analyticSouth_A001_Nreturn_HR660x720_telescopic60.bin',
+ OBS_vTidPhFile = '../input/OBSvph_M2_analyticSouth_A001_Nreturn_HR660x720_telescopic60.bin',
+ OBN_vTidPhFile = '../input/OBNvph_M2_analyticSouth_A001_Nreturn_HR660x720_telescopic60.bin',
+ OBW_uTidPhFile = '../input/OBWuph_M2_analyticSouth_A001_Nreturn_HR660x720_telescopic60.bin',
+ OBNtFile = '../input/linTN_telescopic60.bin',
+ OBStFile = '../input/linTS_telescopic60.bin',
+ OBWtFile = '../input/linTW_telescopic60.bin',
+ OBNsFile = '../input/linSN_telescopic60.bin',
+ OBSsFile = '../input/linSS_telescopic60.bin',
+ OBWsFile = '../input/linSW_telescopic60.bin',
+ &
+
+# Gentle momentum-only sponge over the complete 60-cell telescopic buffer.
+# This keeps the analytical tide identical to the baseline HR run but weakens
+# the sponge to test whether the west-boundary inward signal is partly caused
+# by too-abrupt damping in the buffer.
+ &OBCS_PARM03
+ spongeThickness=60,
+ Urelaxobcsbound=11178.,
+ Urelaxobcsinner=178848.,
+ Vrelaxobcsbound=11178.,
+ Vrelaxobcsinner=178848.,
+ &
+
+# During inflow, relax T/S toward the prescribed background profiles.
+# During outflow, Stevens radiates tracer anomalies out of the domain.
+ &OBCS_PARM04
+ TrelaxStevens=3600.,
+ SrelaxStevens=3600.,
+ useStevensPhaseVel=.TRUE.,
+ useStevensAdvection=.TRUE.,
+ &

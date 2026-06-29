@@ -1,0 +1,63 @@
+# Open-boundaries
+# Recommended LR boundary architecture after the SSH-clamping tests:
+# no prescribed SSH, volume-balanced normal M2 velocity forcing on W/S/N,
+# Stevens/radiative open-boundary behavior, and a momentum-only sponge.
+ &OBCS_PARM01
+ OB_Iwest = 240*1,
+ OB_Jsouth = 220*1,
+ OB_Jnorth = 220*240,
+ useOBCSbalance=.FALSE.,
+ useOBCSprescribe=.TRUE.,
+ useOBCSsponge=.TRUE.,
+ OBCSsponge_W=.TRUE.,
+ OBCSsponge_S=.TRUE.,
+ OBCSsponge_N=.TRUE.,
+ OBCSsponge_E=.FALSE.,
+ OBCSsponge_UatNS=.TRUE.,
+ OBCSsponge_UatEW=.TRUE.,
+ OBCSsponge_VatNS=.TRUE.,
+ OBCSsponge_VatEW=.TRUE.,
+ OBCSsponge_Theta=.FALSE.,
+ OBCSsponge_Salt=.FALSE.,
+ useLinearSponge=.FALSE.,
+ OBCS_monitorFreq=1200.,
+ OBCSprintDiags=.FALSE.,
+ useStevensWest=.TRUE.,
+ useStevensSouth=.TRUE.,
+ useStevensNorth=.TRUE.,
+ useOBCStides = .TRUE.,
+ OBCS_tidalperiod = 44712.,
+ OBS_vTidAmFile = '../input/OBSvam_M2_fullTPXO_balanced_LR220x240_telescopic20.bin',
+ OBN_vTidAmFile = '../input/OBNvam_M2_fullTPXO_balanced_LR220x240_telescopic20.bin',
+ OBW_uTidAmFile = '../input/OBWuam_M2_fullTPXO_balanced_LR220x240_telescopic20.bin',
+ OBS_vTidPhFile = '../input/OBSvph_M2_fullTPXO_balanced_LR220x240_telescopic20.bin',
+ OBN_vTidPhFile = '../input/OBNvph_M2_fullTPXO_balanced_LR220x240_telescopic20.bin',
+ OBW_uTidPhFile = '../input/OBWuph_M2_fullTPXO_balanced_LR220x240_telescopic20.bin',
+ OBNtFile = '../input/linTN_LR220x240_telescopic20.bin',
+ OBStFile = '../input/linTS_LR220x240_telescopic20.bin',
+ OBWtFile = '../input/linTW_LR220x240_telescopic20.bin',
+ OBNsFile = '../input/linSN_LR220x240_telescopic20.bin',
+ OBSsFile = '../input/linSS_LR220x240_telescopic20.bin',
+ OBWsFile = '../input/linSW_LR220x240_telescopic20.bin',
+ &
+
+# Gentle/smoother momentum-only sponge test.  Compared with the recommended
+# baseline, damping is weaker at the numerical boundary and much weaker near
+# the inner edge.  If west inward energy decreases, the baseline sponge was
+# probably too abrupt/reflective.
+ &OBCS_PARM03
+ spongeThickness=20,
+ Urelaxobcsbound=11178.,
+ Urelaxobcsinner=178848.,
+ Vrelaxobcsbound=11178.,
+ Vrelaxobcsinner=178848.,
+ &
+
+# During inflow, relax T/S toward the prescribed background profiles.
+# During outflow, Stevens radiates tracer anomalies out of the domain.
+ &OBCS_PARM04
+ TrelaxStevens=3600.,
+ SrelaxStevens=3600.,
+ useStevensPhaseVel=.TRUE.,
+ useStevensAdvection=.TRUE.,
+ &

@@ -1,0 +1,63 @@
+# Open-boundaries
+# Balanced boundary-isolation experiment: the south+north M2 normal-velocity
+# patterns are retained and a minimum uniform correction over W/S/N wet faces
+# restores zero complex transport. This avoids the huge basin-mean ETAN response
+# of the intentionally unbalanced no-west test.
+ &OBCS_PARM01
+ OB_Iwest = 720*1,
+ OB_Jsouth = 660*1,
+ OB_Jnorth = 660*720,
+ useOBCSbalance=.FALSE.,
+ useOBCSprescribe=.TRUE.,
+ useOBCSsponge=.TRUE.,
+ OBCSsponge_W=.TRUE.,
+ OBCSsponge_S=.TRUE.,
+ OBCSsponge_N=.TRUE.,
+ OBCSsponge_E=.FALSE.,
+ OBCSsponge_UatNS=.TRUE.,
+ OBCSsponge_UatEW=.TRUE.,
+ OBCSsponge_VatNS=.TRUE.,
+ OBCSsponge_VatEW=.TRUE.,
+ OBCSsponge_Theta=.FALSE.,
+ OBCSsponge_Salt=.FALSE.,
+ useLinearSponge=.FALSE.,
+ OBCS_monitorFreq=1200.,
+ OBCSprintDiags=.FALSE.,
+ useStevensWest=.TRUE.,
+ useStevensSouth=.TRUE.,
+ useStevensNorth=.TRUE.,
+ useOBCStides = .TRUE.,
+ OBCS_tidalperiod = 44712.,
+ OBS_vTidAmFile = '../input/OBSvam_M2_noW_balanced_telescopic60.bin',
+ OBN_vTidAmFile = '../input/OBNvam_M2_noW_balanced_telescopic60.bin',
+ OBW_uTidAmFile = '../input/OBWuam_M2_noW_balanced_telescopic60.bin',
+ OBS_vTidPhFile = '../input/OBSvph_M2_noW_balanced_telescopic60.bin',
+ OBN_vTidPhFile = '../input/OBNvph_M2_noW_balanced_telescopic60.bin',
+ OBW_uTidPhFile = '../input/OBWuph_M2_noW_balanced_telescopic60.bin',
+ OBNtFile = '../input/linTN_telescopic60.bin',
+ OBStFile = '../input/linTS_telescopic60.bin',
+ OBWtFile = '../input/linTW_telescopic60.bin',
+ OBNsFile = '../input/linSN_telescopic60.bin',
+ OBSsFile = '../input/linSS_telescopic60.bin',
+ OBWsFile = '../input/linSW_telescopic60.bin',
+ &
+
+# Momentum-only sponge over the complete 60-cell telescopic buffer. The
+# effective relaxation vanishes smoothly at the inner edge because the
+# nonlinear sponge target blends into the local model velocity there.
+ &OBCS_PARM03
+ spongeThickness=60,
+ Urelaxobcsbound=2794.5,
+ Urelaxobcsinner=89424.,
+ Vrelaxobcsbound=2794.5,
+ Vrelaxobcsinner=89424.,
+ &
+
+# During inflow, relax T/S toward the prescribed background profiles.
+# During outflow, Stevens radiates tracer anomalies out of the domain.
+ &OBCS_PARM04
+ TrelaxStevens=3600.,
+ SrelaxStevens=3600.,
+ useStevensPhaseVel=.TRUE.,
+ useStevensAdvection=.TRUE.,
+ &

@@ -1,0 +1,65 @@
+# Open-boundaries
+# LR Ponte-style boundary-architecture test: prescribe TPXO M2 SSH together
+# with weak TPXO barotropic velocity time records on the W/S/N open
+# boundaries.  All velocity records are scaled to 25% of the TPXO-balanced
+# values; normal velocities retain zero net barotropic transport.
+ &OBCS_PARM01
+ OB_Iwest = 240*1,
+ OB_Jsouth = 220*1,
+ OB_Jnorth = 220*240,
+ useOBCSbalance=.FALSE.,
+ useOBCSprescribe=.TRUE.,
+ useOBCSsponge=.TRUE.,
+ OBCSsponge_W=.TRUE.,
+ OBCSsponge_S=.TRUE.,
+ OBCSsponge_N=.TRUE.,
+ OBCSsponge_E=.FALSE.,
+ OBCSsponge_UatNS=.TRUE.,
+ OBCSsponge_UatEW=.TRUE.,
+ OBCSsponge_VatNS=.TRUE.,
+ OBCSsponge_VatEW=.TRUE.,
+ OBCSsponge_Theta=.FALSE.,
+ OBCSsponge_Salt=.FALSE.,
+ useLinearSponge=.FALSE.,
+ OBCS_monitorFreq=1200.,
+ OBCSprintDiags=.FALSE.,
+ useStevensWest=.FALSE.,
+ useStevensSouth=.FALSE.,
+ useStevensNorth=.FALSE.,
+ useOBCStides = .FALSE.,
+ OBWetaFile = '../input/OBWeta_M2_fullTPXO_LR220x240_telescopic20_obeta16.bin',
+ OBSetaFile = '../input/OBSeta_M2_fullTPXO_LR220x240_telescopic20_obeta16.bin',
+ OBNetaFile = '../input/OBNeta_M2_fullTPXO_LR220x240_telescopic20_obeta16.bin',
+ OBWuFile = '../input/OBWu_M2_fullTPXO_balanced_weakvel025_LR220x240_telescopic20_obeta16.bin',
+ OBWvFile = '../input/OBWv_M2_fullTPXO_weakvel025_LR220x240_telescopic20_obeta16.bin',
+ OBSuFile = '../input/OBSu_M2_fullTPXO_weakvel025_LR220x240_telescopic20_obeta16.bin',
+ OBSvFile = '../input/OBSv_M2_fullTPXO_balanced_weakvel025_LR220x240_telescopic20_obeta16.bin',
+ OBNuFile = '../input/OBNu_M2_fullTPXO_weakvel025_LR220x240_telescopic20_obeta16.bin',
+ OBNvFile = '../input/OBNv_M2_fullTPXO_balanced_weakvel025_LR220x240_telescopic20_obeta16.bin',
+ OBNtFile = '../input/linTN_LR220x240_telescopic20_obeta16.bin',
+ OBStFile = '../input/linTS_LR220x240_telescopic20_obeta16.bin',
+ OBWtFile = '../input/linTW_LR220x240_telescopic20_obeta16.bin',
+ OBNsFile = '../input/linSN_LR220x240_telescopic20_obeta16.bin',
+ OBSsFile = '../input/linSS_LR220x240_telescopic20_obeta16.bin',
+ OBWsFile = '../input/linSW_LR220x240_telescopic20_obeta16.bin',
+ &
+
+# Momentum-only sponge over the complete 20-cell LR telescopic buffer. The
+# effective relaxation vanishes smoothly at the inner edge because the
+# nonlinear sponge target blends into the local model velocity there.
+ &OBCS_PARM03
+ spongeThickness=20,
+ Urelaxobcsbound=2794.5,
+ Urelaxobcsinner=89424.,
+ Vrelaxobcsbound=2794.5,
+ Vrelaxobcsinner=89424.,
+ &
+
+# Stevens is disabled in this nonlinear-free-surface SSH-clamped test because
+# the present MITgcm/OBCS implementation does not support Stevens + NLFS.
+ &OBCS_PARM04
+ TrelaxStevens=3600.,
+ SrelaxStevens=3600.,
+ useStevensPhaseVel=.FALSE.,
+ useStevensAdvection=.FALSE.,
+ &

@@ -1,0 +1,104 @@
+# ====================
+# | Model parameters |
+# ====================
+#
+# Continuous equation parameters
+ &PARM01
+ Tref=60*10.05, 
+ Sref=60*34.14,
+ rhoNil=1026.0, 
+# Grid-aware horizontal momentum closure. MITgcm evaluates
+# Ah_grid = 0.25*viscAhGrid*L^2/deltaT; with this LR mesh and deltaT=27 s,
+# viscAhGrid=0.05 gives approximately 40--50 m^2/s while retaining the
+# correct local grid-size scaling.
+ viscAh=0.,
+ viscAhGrid=0.05,
+ viscAhGridMax=0.05,
+# Weak background vertical viscosity; resolved tidal shear and quadratic
+# bottom drag, rather than a large uniform Az, provide the main damping.
+ viscAz=1.E-4,
+ no_slip_sides=.TRUE.,
+# Do not add a viscous no-slip bottom stress on top of quadratic drag.
+ no_slip_bottom=.FALSE.,
+ bottomDragQuadratic=2.E-3,
+# Scheme 77 is MITgcm's multidimensional flux-limited tracer advection.
+# It supplies scale-selective numerical regularization, so a large explicit
+# horizontal tracer diffusivity is neither needed nor desirable here.
+ tempAdvScheme=77,
+ saltAdvScheme=77,
+ multiDimAdvection=.TRUE.,
+# Required by MITgcm for stable internal-wave coupling with one-step,
+# multidimensional tracer advection.
+ staggerTimeStep=.TRUE.,
+ diffKhT=0.,
+ diffKhS=0.,
+# Typical weak-ocean background diapycnal diffusivity.
+ diffKzT=1.E-5,
+ diffKzS=1.E-5,
+ eosType='LINEAR',
+ tAlpha=2.E-4,
+ sBeta=7.4E-4,
+ gravity=9.81,
+ implicitFreeSurface=.TRUE.,
+ nonHydrostatic=.FALSE.,
+ vectorInvariantMomentum=.TRUE.,
+# Energy- and enstrophy-conserving vorticity interpolation.  KE scheme 3
+# is area weighted and accounts for partial cells.
+ selectVortScheme=3,
+ selectKEscheme=3,
+# Keep Coriolis and relative-vorticity advection as separate diagnostics.
+ useAbsVorticity=.FALSE.,
+# Required for exact volume conservation with the free surface.
+ exactConserv=.TRUE.,
+ readBinaryPrec=64,
+ useSingleCpuIO=.TRUE.,
+ hFacMin=0.3,
+ &
+
+# Elliptic solver parameters
+ &PARM02
+ cg2dMaxIters=1000,
+ cg2dTargetResidual=1.E-7,
+ &
+
+# Time stepping parameters
+ &PARM03
+ nIter0=0,
+# Eight M2 periods: 3-period forcing ramp plus 5 periods for assessing
+# outgoing and reflected internal-wave signals.
+ endTime=357696.,
+ deltaT=27.,
+ abEps=0.1,
+ pChkptFreq=0.,
+ chkptFreq=0.,
+ writePickupAtEnd=.FALSE.,
+# State and budget fields are handled by pkg/diagnostics; avoid duplicate
+# multi-gigabyte model-state dumps during the analysis run.
+ dumpFreq=0.,
+ monitorFreq=5589.,
+ monitorSelect=2,
+ periodicExternalForcing = .TRUE.,
+ externForcingPeriod = 21600., 
+ externForcingCycle = 43200.,
+ &
+
+# Gridding parameters
+ &PARM04
+ usingSphericalPolarGrid=.TRUE.,
+ delXFile='../input/smalldom_LR220x240_telescopic20_dx.bin',
+ delYFile='../input/smalldom_LR220x240_telescopic20_dy.bin',
+ delZ= 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 16, 
+       17, 19, 21, 22, 25, 27, 29, 32, 35, 38, 42, 46, 50, 54, 59, 65, 71, 77, 84, 92, 101, 110, 120, 131, 143, 
+       153, 168,
+ xgOrigin=242.359248936560,
+ ygOrigin=31.122021265366,
+ &
+
+# Input datasets
+ &PARM05
+# The 600x600 HR domain is coarsened by 3x to a 200x200 physical domain,
+# embedded in a 220x240 LR telescopic grid with 20-cell W/S/N buffers.
+ bathyFile='../input/smalldom_LR220x240_telescopic20_bat.bin',
+ hydrogThetaFile = '../input/IniTemp60x220x240_LR220x240_telescopic20.bin',
+ hydrogSaltFile = '../input/IniSalt60x220x240_LR220x240_telescopic20.bin',
+ &

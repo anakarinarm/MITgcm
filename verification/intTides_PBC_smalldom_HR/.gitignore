@@ -1,0 +1,62 @@
+# Project-specific ignores for intTides_PBC_smalldom_HR.
+#
+# Goal: keep reproducible configuration, scripts, and documentation in git,
+# while avoiding MITgcm build products and very large runtime outputs.
+
+# macOS/editor noise
+.DS_Store
+*~
+*.swp
+*.swo
+__pycache__/
+*.py[cod]
+
+# MITgcm build directories and generated compile artifacts
+build*/
+*.o
+*.mod
+*.f
+*.F
+Makefile
+Makefile.*
+mitgcmuv
+
+# Runtime output directories/symlinks used for external-drive output
+output/
+outputs/
+
+# MITgcm MDS/model output.  This intentionally does not match namelist files
+# such as "data", "data.obcs", or "data.diagnostics".
+*.data
+*.meta
+*.nc
+*.cdf
+
+# Binary input/forcing products can be regenerated or archived separately.
+# Some hydrography files are O(100 MB), so do not commit them to ordinary git.
+input/*.bin
+
+# Standard MITgcm logs and diagnostics produced at runtime
+STDOUT.*
+STDERR.*
+LOG.*
+monitor*
+available_diagnostics.log
+eedata.mth
+
+# Checkpoint/restart files
+pickup*
+ckptA*
+ckptB*
+
+# Diagnostic post-processing products that are cheap to regenerate
+boundary_reflection_summary.csv
+boundary_reflection_summary.png
+invalid_unbalanced_boundary_reflection_summary.csv
+modal_characteristic_summary.csv
+
+# Large/local scratch products
+scratch/
+tmp/
+.nan_test*/
+*.tmp
