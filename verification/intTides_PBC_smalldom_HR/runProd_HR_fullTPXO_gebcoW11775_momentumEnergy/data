@@ -1,0 +1,110 @@
+# ====================
+# | Model parameters |
+# ====================
+#
+# Continuous equation parameters
+ &PARM01
+ Tref=60*10.05, 
+ Sref=60*34.14,
+ rhoNil=1026.0, 
+# Grid-aware horizontal momentum closure. MITgcm evaluates
+# Ah_grid = 0.25*viscAhGrid*L^2/deltaT. Keep grid-aware horizontal momentum
+# closure so damping scales with the mesh instead of using a fixed Ah.
+ viscAh=0.,
+ viscAhGrid=0.05,
+ viscAhGridMax=0.05,
+# Weak background vertical viscosity; resolved tidal shear and quadratic
+# bottom drag, rather than a large uniform Az, provide the main damping.
+ viscAz=1.E-4,
+ no_slip_sides=.TRUE.,
+# Do not add a viscous no-slip bottom stress on top of quadratic drag.
+ no_slip_bottom=.FALSE.,
+ bottomDragQuadratic=2.E-3,
+# Scheme 77 is MITgcm's multidimensional flux-limited tracer advection.
+# It supplies scale-selective numerical regularization, so a large explicit
+# horizontal tracer diffusivity is neither needed nor desirable here.
+ tempAdvScheme=77,
+ saltAdvScheme=77,
+ multiDimAdvection=.TRUE.,
+# Required by MITgcm for stable internal-wave coupling with one-step,
+# multidimensional tracer advection.
+ staggerTimeStep=.TRUE.,
+ diffKhT=0.,
+ diffKhS=0.,
+# Typical weak-ocean background diapycnal diffusivity.
+ diffKzT=1.E-5,
+ diffKzS=1.E-5,
+ eosType='LINEAR',
+ tAlpha=2.E-4,
+ sBeta=7.4E-4,
+ gravity=9.81,
+ implicitFreeSurface=.TRUE.,
+# Required for prescribed OBCS sea-surface height files (OB*etaFile).
+ nonlinFreeSurf=4,
+ select_rStar=2,
+ nonHydrostatic=.FALSE.,
+ vectorInvariantMomentum=.TRUE.,
+# Energy- and enstrophy-conserving vorticity interpolation.  KE scheme 3
+# is area weighted and accounts for partial cells.
+ selectVortScheme=3,
+ selectKEscheme=3,
+# Keep Coriolis and relative-vorticity advection as separate diagnostics.
+ useAbsVorticity=.FALSE.,
+# Required for exact volume conservation with the free surface.
+ exactConserv=.TRUE.,
+ readBinaryPrec=64,
+ useSingleCpuIO=.TRUE.,
+ hFacMin=0.3,
+ &
+
+# Elliptic solver parameters
+ &PARM02
+ cg2dMaxIters=1000,
+ cg2dTargetResidual=1.E-7,
+ &
+
+# Time stepping parameters
+ &PARM03
+ nIter0=0,
+# Eight M2 periods: 3-period forcing ramp plus 5 periods for assessing
+# outgoing and reflected internal-wave signals.
+ endTime=357696.,
+ deltaT=27.,
+ abEps=0.1,
+ pChkptFreq=0.,
+ chkptFreq=0.,
+ writePickupAtEnd=.FALSE.,
+# State and budget fields are handled by pkg/diagnostics; avoid duplicate
+# multi-gigabyte model-state dumps during the analysis run.
+ dumpFreq=0.,
+ monitorFreq=5589.,
+ monitorSelect=2,
+ periodicExternalForcing = .TRUE.,
+# OBCS SSH and velocity are prescribed as 16 records over one M2 cycle.
+ externForcingPeriod = 2794.5,
+ externForcingCycle = 44712.,
+ &
+
+# Gridding parameters
+ &PARM04
+ usingSphericalPolarGrid=.TRUE.,
+ delXFile='../input/smalldom_HR750x720_gebcoW11775_physW11775_tel60_dx.bin',
+ delYFile='../input/smalldom_HR750x720_gebcoW11775_physW11775_tel60_dy.bin',
+ delZ= 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 16, 
+       17, 19, 21, 22, 25, 27, 29, 32, 35, 38, 42, 46, 50, 54, 59, 65, 71, 77, 84, 92, 101, 110, 120, 131, 143, 
+       153, 168,
+ xgOrigin=241.982924784919,
+ ygOrigin=31.022894044779,
+ &
+
+# Input datasets
+ &PARM05
+# HR GEBCO west-extension production baseline: physical west edge at 117.75 W, with a
+# 60-cell stretched W/S/N sponge outside the physical domain. Bathymetry is
+# interpolated from the broad local GEBCO 2023 file, flattened normal to the
+# sponge buffers, and wet cells shallower than 10 m are deepened for
+# prescribed-SSH/r* robustness.
+bathyFile='../input/smalldom_HR750x720_gebcoW11775_physW11775_tel60_bat_min10m_obeta.bin',
+ hydrogThetaFile = '../input/IniTemp60x750x720_HR750x720_gebcoW11775_physW11775_tel60.bin',
+ hydrogSaltFile = '../input/IniSalt60x750x720_HR750x720_gebcoW11775_physW11775_tel60.bin',
+ &

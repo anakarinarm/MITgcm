@@ -22,7 +22,9 @@ Makefile.*
 mitgcmuv
 
 # Runtime output directories/symlinks used for external-drive output
+output
 output/
+outputs
 outputs/
 
 # MITgcm MDS/model output.  This intentionally does not match namelist files

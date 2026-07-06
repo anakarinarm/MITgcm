@@ -1,0 +1,67 @@
+# Production diagnostics for the HR full-TPXO GEBCO W117.75 baseline.
+#
+# Output is written to output/, which should be a symlink to external storage:
+# /Volumes/LaCie/MITgcm_outputs/intTides_PBC_smalldom_HR/runProd_HR_fullTPXO_gebcoW11775_momentumEnergy
+#
+# M2 period = 44712 s.  The diagnostic interval is M2/8 = 5589 s.
+# timePhase = 134136 s starts output after the 3-M2 forcing ramp.
+#
+# Sign convention:
+#   frequency < 0 : instantaneous snapshots, phase-resolving.
+#   frequency > 0 : time averages of already-computed MITgcm diagnostics.
+#
+# Keep 3-D and 2-D diagnostics in separate streams.  Mixing ETAN/PHIBOT with
+# 3-D fields can make MITgcm select only their common surface level.
+#
+# Stream 1: phase-resolving 3-D state and pressure/velocity-flux fields for
+#           baroclinic energy flux and conversion post-processing.
+# Stream 2: phase-resolving 2-D free-surface/bottom-pressure fields.
+# Stream 3: averaged direct momentum-budget terms.
+# Stream 4: averaged vector-invariant momentum decomposition terms.
+#
+# Units reminder:
+#   TOTUTEND/TOTVTEND are m/s/day.
+#   Um_*/Vm_* and AB_gU/AB_gV are m/s^2.
+
+ &DIAGNOSTICS_LIST
+  dumpAtLast = .FALSE.,
+
+  fields(1:12,1) =
+       'UVEL    ','VVEL    ','WVEL    ',
+       'UVELMASS','VVELMASS','WVELMASS',
+       'THETA   ','SALT    ','RHOAnoma',
+       'PHIHYD  ','UVELPHI ','VVELPHI ',
+  fileName(1) = 'output/diag_state_3d',
+  frequency(1) = -5589.,
+  timePhase(1) = 134136.,
+  fileFlags(1) = 'D       ',
+
+  fields(1:2,2) =
+       'ETAN    ','PHIBOT  ',
+  fileName(2) = 'output/diag_state_2d',
+  frequency(2) = -5589.,
+  timePhase(2) = 134136.,
+  fileFlags(2) = 'D       ',
+
+  fields(1:12,3) =
+       'TOTUTEND','TOTVTEND','Um_Advec','Vm_Advec',
+       'Um_dPhiX','Vm_dPhiY','Um_Ext  ','Vm_Ext  ',
+       'Um_Diss ','Vm_Diss ','AB_gU   ','AB_gV   ',
+  fileName(3) = 'output/diag_mom_budget',
+  frequency(3) = 5589.,
+  timePhase(3) = 134136.,
+  fileFlags(3) = 'D       ',
+
+  fields(1:14,4) =
+       'Um_Cori ','Vm_Cori ','Um_AdvZ3','Vm_AdvZ3',
+       'Um_AdvRe','Vm_AdvRe','momKE   ','momVort3',
+       'Um_hDis2','Vm_hDis2','USidDrag','VSidDrag',
+       'UBotDrag','VBotDrag',
+  fileName(4) = 'output/diag_mom_vecinv',
+  frequency(4) = 5589.,
+  timePhase(4) = 134136.,
+  fileFlags(4) = 'D       ',
+ &
+
+ &DIAG_STATIS_PARMS
+ &
